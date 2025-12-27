@@ -5,10 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
-      // TAMBAHKAN BARIS INI:
-      // Ganti 'nama-repo-github-anda' dengan nama repository asli Anda di GitHub.
-      // Contoh: jika URL repo Anda github.com/shafnatfr/universe-expo-2025, maka isinya '/universe-expo-2025/'
-      base: '/universe-expo-2025/', 
+      // PERBAIKAN DI SINI: Gunakan HURUF BESAR sesuai nama repository
+      base: '/UNIVERSE-EXPO-2025/', 
 
       server: {
         port: 3000,
