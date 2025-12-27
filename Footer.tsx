@@ -1,6 +1,8 @@
 import React from 'react';
 import { Instagram, Twitter, Linkedin } from 'lucide-react';
 
+import logo from './logo.png';
+
 const Footer: React.FC = () => {
     return (
         <footer className="relative z-10 bg-black text-white pt-20 pb-10 border-t border-white/10">
@@ -16,11 +18,9 @@ const Footer: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* <div className="flex gap-6">
-                        <SocialButton icon={<Instagram size={20} />} />
-                        <SocialButton icon={<Twitter size={20} />} />
-                        <SocialButton icon={<Linkedin size={20} />} />
-                    </div> */}
+                    <div className="flex gap-6">
+                        <img src={logo} alt="Universe Expo Logo" className="w-24 h-24 rounded-full object-cover border-2 border-white/20" />
+                    </div>
                 </div>
 
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
