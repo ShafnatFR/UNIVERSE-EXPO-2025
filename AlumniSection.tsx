@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ALUMNI_DATA } from '../constants';
+import { ALUMNI_DATA } from './constants';
 import { MessageCircle, Star } from 'lucide-react';
 
 const AlumniSection: React.FC = () => {

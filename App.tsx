@@ -1,11 +1,14 @@
 import React from 'react';
-import StarBackground from './components/StarBackground';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ProblemSection from './components/ProblemSection';
-import InspirationSection from './components/InspirationSection';
-import RSVPSection from './components/RSVPSection';
-import Footer from './components/Footer';
+import StarBackground from './StarBackground';
+import Navbar from './Navbar';
+import Hero from './Hero';
+import ProblemSection from './ProblemSection';
+import InspirationSection from './InspirationSection';
+import RSVPSection from './RSVPSection';
+import Footer from './Footer';
+
+// Note: AlumniSection, EventMap, and RegistrationForm are currently unused/commented out
+// but if imported, they should also be imported from './'
 
 const App: React.FC = () => {
   return (
@@ -25,19 +28,6 @@ const App: React.FC = () => {
         <div id="rsvp">
           <RSVPSection />
         </div>
-
-        {/* Hidden Sections as per request */}
-        {/* 
-        <div id="alumni">
-            <AlumniSection />
-        </div>
-        <div id="schedule">
-            <EventMap />
-        </div>
-        <div id="register">
-            <RegistrationForm />
-        </div> 
-        */}
       </main>
 
       <Footer />

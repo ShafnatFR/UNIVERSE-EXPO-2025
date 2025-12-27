@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Radio, Sparkles } from 'lucide-react';
-import { INSPIRATIONAL_QUOTES } from '../constants';
-import { InspirationalQuote } from '../types';
+import { INSPIRATIONAL_QUOTES } from './constants';
+import { InspirationalQuote } from './types';
 
 const InspirationSection: React.FC = () => {
     const [quote, setQuote] = useState<InspirationalQuote | null>(null);

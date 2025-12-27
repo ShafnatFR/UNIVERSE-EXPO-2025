@@ -4,6 +4,14 @@ import { motion } from 'framer-motion';
 
 const Hero: React.FC = () => {
     const scrollToContent = () => {
+        // Trigger Auto Full Screen feature
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch((err) => {
+                // Ignore error if user blocked it or browser doesn't support
+                console.log("Full screen request denied or not supported", err);
+            });
+        }
+
         const element = document.getElementById('problem-section');
         element?.scrollIntoView({ behavior: 'smooth' });
     };

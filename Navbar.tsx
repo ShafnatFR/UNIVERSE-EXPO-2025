@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Maximize, Minimize } from 'lucide-react';
 
 const Navbar: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        
+        // Listener untuk mendeteksi perubahan mode fullscreen (misal user tekan ESC)
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
     }, []);
+
+    const toggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch((err) => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    };
 
     const navLinks = [
         { name: 'Home', href: '#home' },
@@ -63,6 +86,16 @@ const Navbar: React.FC = () => {
                             {link.name}
                         </a>
                     ))}
+                    
+                    {/* Full Screen Toggle Button */}
+                    <button 
+                        onClick={toggleFullscreen}
+                        className="text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+                        title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                    >
+                        {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+                    </button>
+
                     <a 
                         href="https://bit.ly/OPENRECRUITMENTPESERTA2NDUNIVERSEEXPO"
                         target="_blank"
@@ -74,9 +107,17 @@ const Navbar: React.FC = () => {
                 </div>
 
                 {/* Mobile Toggle */}
-                <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? <X /> : <Menu />}
-                </button>
+                <div className="flex items-center gap-4 md:hidden">
+                    <button 
+                        onClick={toggleFullscreen}
+                        className="text-white p-1"
+                    >
+                         {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+                    </button>
+                    <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+                        {isOpen ? <X /> : <Menu />}
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Nav */}

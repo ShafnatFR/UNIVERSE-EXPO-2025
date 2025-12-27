@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SCHEDULE_DATA, UNIVERSITY_DATA } from '../constants';
+import { SCHEDULE_DATA, UNIVERSITY_DATA } from './constants';
 import { Calendar, Map, Clock, X, ExternalLink, GraduationCap, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
-import { University } from '../types';
+import { University } from './types';
 
 const EventMap: React.FC = () => {
     const [selectedUni, setSelectedUni] = useState<University | null>(null);

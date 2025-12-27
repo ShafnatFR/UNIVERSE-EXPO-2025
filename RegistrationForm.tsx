@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, ArrowRight, Upload, Camera, QrCode, ScanLine, Download, X } from 'lucide-react';
-import { RegistrationFormData } from '../types';
+import { RegistrationFormData } from './types';
 import html2canvas from 'html2canvas';
 
 const RegistrationForm: React.FC = () => {
