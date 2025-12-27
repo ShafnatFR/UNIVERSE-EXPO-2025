@@ -11,24 +11,24 @@ const Footer: React.FC = () => {
                             UNIVERSE EXPO 2025
                         </h2>
                         <p className="text-gray-400 max-w-xs">
-                            Your Universe, Your Journey. 
+                            Your Universe, Your Journey.
                             Event pendidikan paling estetik tahun ini.
                         </p>
                     </div>
 
-                    <div className="flex gap-6">
+                    {/* <div className="flex gap-6">
                         <SocialButton icon={<Instagram size={20} />} />
                         <SocialButton icon={<Twitter size={20} />} />
                         <SocialButton icon={<Linkedin size={20} />} />
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
                     <p>&copy; 2025 Universe Expo Committee. All rights reserved.</p>
-                    <div className="flex gap-6">
+                    {/* <div className="flex gap-6">
                         <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
                         <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </footer>

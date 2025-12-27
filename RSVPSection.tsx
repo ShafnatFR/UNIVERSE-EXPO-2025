@@ -6,7 +6,7 @@ const RSVPSection: React.FC = () => {
     return (
         <section id="rsvp-section" className="relative z-10 py-16 md:py-24 px-4">
             <div className="max-w-4xl mx-auto">
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
@@ -15,10 +15,10 @@ const RSVPSection: React.FC = () => {
                     {/* Glassmorphic Card Container */}
                     <div className="absolute inset-0 bg-gradient-to-r from-pastel-pink/20 to-pastel-blue/20 rounded-[2rem] blur-xl"></div>
                     <div className="relative bg-[#1a1a2e]/80 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 md:p-12 overflow-hidden shadow-2xl">
-                        
+
                         {/* Decorative Header Line */}
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pastel-pink via-white to-pastel-blue opacity-70"></div>
-                        
+
                         {/* Header */}
                         <div className="text-center mb-8">
                             <span className="inline-block py-1 px-3 rounded-full bg-pastel-yellow/10 border border-pastel-yellow/30 text-pastel-yellow text-xs font-bold tracking-widest uppercase mb-4">
@@ -34,7 +34,7 @@ const RSVPSection: React.FC = () => {
                         </div>
 
                         {/* Content Body */}
-                        <div className="space-y-6 text-slate-300 text-base md:text-lg leading-relaxed mb-10 text-center md:text-left">
+                        <div className="space-y-6 text-slate-300 text-base md:text-lg leading-relaxed mb-10 text-justify">
                             <p className="font-medium text-white text-xl">
                                 Halo, Explorer! 🙌🏻
                             </p>
