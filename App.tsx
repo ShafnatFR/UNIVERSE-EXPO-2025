@@ -6,9 +6,9 @@ import ProblemSection from './ProblemSection';
 import InspirationSection from './InspirationSection';
 import RSVPSection from './RSVPSection';
 import Footer from './Footer';
-
-// Note: AlumniSection, EventMap, and RegistrationForm are currently unused/commented out
-// but if imported, they should also be imported from './'
+import AlumniSection from './AlumniSection';
+import EventMap from './EventMap';
+import RegistrationForm from './RegistrationForm';
 
 const App: React.FC = () => {
   return (
@@ -22,7 +22,15 @@ const App: React.FC = () => {
         </section>
         
         <ProblemSection />
+        
+        {/* Fitur Utama */}
+        <EventMap />
+        <AlumniSection />
+        
         <InspirationSection />
+        
+        {/* ID Card Generator */}
+        <RegistrationForm />
         
         {/* RSVP Section - Focused Content */}
         <div id="rsvp">

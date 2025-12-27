@@ -35,6 +35,7 @@
               'meteor': 'meteor 10s linear infinite',
               'drift': 'drift 20s linear infinite',
               'ship-pass': 'shipPass 60s linear infinite',
+              'spin-slow': 'spin 12s linear infinite',
             },
             keyframes: {
               float: {
@@ -82,24 +83,23 @@
         background: #f4c2c2;
       }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "vite": "https://esm.sh/vite@^7.3.0",
-    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "html2canvas": "https://esm.sh/html2canvas@^1.4.1"
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
 </head>
   <body class="bg-[#1a1a2e] text-slate-900 antialiased overflow-x-hidden">
     <div id="root"></div>
-    <!-- Script ini PENTING agar browser tahu file React mana yang harus dijalankan -->
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

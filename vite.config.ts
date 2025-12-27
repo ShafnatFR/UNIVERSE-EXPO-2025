@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   // Setting base ke './' sangat PENTING untuk GitHub Pages
-  // Ini memastikan aset dimuat secara relatif, bukan dari root domain absolut
   base: './',
+  server: {
+    // Ini mengizinkan akses dari Network (IP Address)
+    host: true
+  }
 });
