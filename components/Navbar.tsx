@@ -12,16 +12,42 @@ const Navbar: React.FC = () => {
     }, []);
 
     const navLinks = [
-        { name: 'Home', href: '#' },
+        { name: 'Home', href: '#home' },
         { name: 'About', href: '#problem-section' },
-        { name: 'Alumni', href: '#alumni' },
-        { name: 'Schedule', href: '#schedule' },
+        { name: 'Info RSVP', href: '#rsvp' },
     ];
+
+    const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault();
+        setIsOpen(false);
+
+        const targetId = href.replace('#', '');
+        const element = document.getElementById(targetId);
+
+        if (element) {
+            const headerOffset = 80; // Approximate height of the fixed navbar
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        } else if (href === '#home') {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     return (
         <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#1a1a2e]/90 backdrop-blur-md border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
             <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-                <div className="text-xl font-display font-bold text-white tracking-widest">
+                <div 
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="text-xl font-display font-bold text-white tracking-widest cursor-pointer"
+                >
                     UNIVERSE
                 </div>
 
@@ -31,14 +57,20 @@ const Navbar: React.FC = () => {
                         <a 
                             key={link.name} 
                             href={link.href} 
-                            className="text-sm font-medium text-gray-300 hover:text-pastel-pink transition-colors uppercase tracking-wide"
+                            onClick={(e) => handleScrollTo(e, link.href)}
+                            className="text-sm font-medium text-gray-300 hover:text-pastel-pink transition-colors uppercase tracking-wide cursor-pointer"
                         >
                             {link.name}
                         </a>
                     ))}
-                    <button className="bg-white text-slate-900 px-5 py-2 rounded-full font-bold text-sm hover:bg-pastel-blue transition-colors">
-                        Register
-                    </button>
+                    <a 
+                        href="https://bit.ly/OPENRECRUITMENTPESERTA2NDUNIVERSEEXPO"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white text-slate-900 px-5 py-2 rounded-full font-bold text-sm hover:bg-pastel-blue transition-colors"
+                    >
+                        Join as Rep
+                    </a>
                 </div>
 
                 {/* Mobile Toggle */}
@@ -49,17 +81,25 @@ const Navbar: React.FC = () => {
 
             {/* Mobile Nav */}
             {isOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full bg-[#1a1a2e] border-b border-white/10 p-4 flex flex-col gap-4">
+                <div className="md:hidden absolute top-full left-0 w-full bg-[#1a1a2e] border-b border-white/10 p-4 flex flex-col gap-4 shadow-xl">
                     {navLinks.map((link) => (
                         <a 
                             key={link.name} 
                             href={link.href}
-                            onClick={() => setIsOpen(false)}
-                            className="text-gray-300 hover:text-pastel-pink py-2"
+                            onClick={(e) => handleScrollTo(e, link.href)}
+                            className="text-gray-300 hover:text-pastel-pink py-2 font-medium"
                         >
                             {link.name}
                         </a>
                     ))}
+                     <a 
+                        href="https://bit.ly/OPENRECRUITMENTPESERTA2NDUNIVERSEEXPO"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-center bg-white text-slate-900 px-5 py-2 rounded-full font-bold text-sm hover:bg-pastel-blue transition-colors mt-2"
+                    >
+                        Join as Rep
+                    </a>
                 </div>
             )}
         </nav>

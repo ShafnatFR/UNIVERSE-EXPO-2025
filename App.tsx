@@ -4,9 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProblemSection from './components/ProblemSection';
 import InspirationSection from './components/InspirationSection';
-import AlumniSection from './components/AlumniSection';
-import EventMap from './components/EventMap';
-import RegistrationForm from './components/RegistrationForm';
+import RSVPSection from './components/RSVPSection';
 import Footer from './components/Footer';
 
 const App: React.FC = () => {
@@ -16,9 +14,20 @@ const App: React.FC = () => {
       <Navbar />
       
       <main>
-        <Hero />
+        <section id="home">
+          <Hero />
+        </section>
+        
         <ProblemSection />
         <InspirationSection />
+        
+        {/* RSVP Section - Focused Content */}
+        <div id="rsvp">
+          <RSVPSection />
+        </div>
+
+        {/* Hidden Sections as per request */}
+        {/* 
         <div id="alumni">
             <AlumniSection />
         </div>
@@ -27,7 +36,8 @@ const App: React.FC = () => {
         </div>
         <div id="register">
             <RegistrationForm />
-        </div>
+        </div> 
+        */}
       </main>
 
       <Footer />

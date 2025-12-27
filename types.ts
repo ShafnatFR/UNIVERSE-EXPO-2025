@@ -23,6 +23,7 @@ export interface RegistrationFormData {
     phone: string;
     school: string;
     interest: string;
+    photoPreview?: string;
 }
 
 export interface University {
