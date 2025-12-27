@@ -4,13 +4,16 @@ import { CheckCircle, ArrowRight, Upload, Camera, QrCode, ScanLine, Download, X 
 import { RegistrationFormData } from './types';
 import html2canvas from 'html2canvas';
 
+// Import default profile image
+import defaultProfile from './profil.jpg';
+
 const RegistrationForm: React.FC = () => {
     const [formData, setFormData] = useState<RegistrationFormData>({
         fullName: '',
         major: '',
         interest: 'Saintek',
         motivation: '',
-        photoPreview: ''
+        photoPreview: defaultProfile
     });
 
     // State to control the Result Modal
@@ -213,6 +216,7 @@ const RegistrationForm: React.FC = () => {
                                                 name="interest"
                                                 value={formData.interest}
                                                 onChange={handleChange}
+                                                required
                                                 className={`${inputClasses} appearance-none cursor-pointer`}
                                             >
                                                 <option value="Saintek">Science & Tech (Saintek)</option>
