@@ -1,47 +1,6 @@
 import { Alumni, EventSchedule, University, InspirationalQuote } from './types';
 
-export const ALUMNI_DATA: Alumni[] = [
-    {
-        id: '1',
-        name: "Sarah Wijaya",
-        university: "Universitas Indonesia",
-        major: "Ilmu Komputer",
-        category: "Saintek",
-        quote: "Dulu aku kira coding itu serem, ternyata kayak nulis puisi tapi pake logika.",
-        image: "https://picsum.photos/200/200?random=1",
-        tags: ["Tech", "Coding", "UI"]
-    },
-    {
-        id: '2',
-        name: "Budi Santoso",
-        university: "ITB",
-        major: "Desain Komunikasi Visual",
-        category: "Soshum",
-        quote: "Seni dan teknologi itu gak terpisah. Di sini aku belajar gabungin keduanya.",
-        image: "https://picsum.photos/200/200?random=2",
-        tags: ["Art", "Design", "Creative"]
-    },
-    {
-        id: '3',
-        name: "Amelia Putri",
-        university: "UGM",
-        major: "Psikologi",
-        category: "Soshum",
-        quote: "Memahami manusia itu serumit memahami semesta, tapi seru banget!",
-        image: "https://picsum.photos/200/200?random=3",
-        tags: ["People", "Mind", "Social"]
-    },
-    {
-        id: '4',
-        name: "Kevin Tan",
-        university: "ITS",
-        major: "Teknik Robotika",
-        category: "Saintek",
-        quote: "Bikin robot itu bukan cuma soal kabel, tapi soal masa depan.",
-        image: "https://picsum.photos/200/200?random=4",
-        tags: ["Robot", "Future", "Engineering"]
-    }
-];
+export const ALUMNI_DATA: Alumni[] = [];
 
 export const SCHEDULE_DATA: EventSchedule[] = [
     {
@@ -99,7 +58,7 @@ export const UNIVERSITY_DATA: University[] = [
         description: 'Pusat pengembangan teknologi dan seni rupa. Mengorbit dengan inovasi.',
         majors: ['Teknik Sipil', 'Seni Rupa', 'Informatika'],
         link: 'https://www.itb.ac.id',
-        x: 0, 
+        x: 0,
         y: 0,
         color: 'bg-blue-400',
         shadowColor: 'shadow-blue-400',

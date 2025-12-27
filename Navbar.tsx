@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
                     </button>
 
                     <a 
-                        href="https://bit.ly/OPENRECRUITMENTPESERTA2NDUNIVERSEEXPO"
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSefNdvgIlHcoM9j0nuUPkh1a3DNyM9oSWKbDPDOQ_-dpZqzFw/viewform?usp=send_form"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-white text-slate-900 px-5 py-2 rounded-full font-bold text-sm hover:bg-pastel-blue transition-colors"
@@ -134,7 +134,7 @@ const Navbar: React.FC = () => {
                         </a>
                     ))}
                      <a 
-                        href="https://bit.ly/OPENRECRUITMENTPESERTA2NDUNIVERSEEXPO"
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSefNdvgIlHcoM9j0nuUPkh1a3DNyM9oSWKbDPDOQ_-dpZqzFw/viewform?usp=send_form"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-center bg-white text-slate-900 px-5 py-2 rounded-full font-bold text-sm hover:bg-pastel-blue transition-colors mt-2"

@@ -19,10 +19,9 @@ export interface EventSchedule {
 
 export interface RegistrationFormData {
     fullName: string;
-    email: string;
-    phone: string;
-    school: string;
+    major: string;
     interest: string;
+    motivation: string;
     photoPreview?: string;
 }
 

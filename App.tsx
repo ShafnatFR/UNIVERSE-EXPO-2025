@@ -8,7 +8,8 @@ import RSVPSection from './RSVPSection';
 import Footer from './Footer';
 // import AlumniSection from './AlumniSection';
 // import EventMap from './EventMap';
-// import RegistrationForm from './RegistrationForm';
+import RegistrationForm from './RegistrationForm';
+import AlumniSection from './AlumniSection';
 
 const App: React.FC = () => {
   return (
@@ -25,12 +26,12 @@ const App: React.FC = () => {
 
         {/* Fitur Utama */}
         {/* <EventMap /> */}
-        {/* <AlumniSection /> */}
+        <AlumniSection />
 
         <InspirationSection />
 
         {/* ID Card Generator */}
-        {/* <RegistrationForm /> */}
+        <RegistrationForm />
 
         {/* RSVP Section - Focused Content */}
         <div id="rsvp">

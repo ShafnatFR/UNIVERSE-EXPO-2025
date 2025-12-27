@@ -73,7 +73,7 @@ const RSVPSection: React.FC = () => {
                             <motion.a
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                href="https://bit.ly/OPENRECRUITMENTPESERTA2NDUNIVERSEEXPO"
+                                href="https://docs.google.com/forms/d/e/1FAIpQLSefNdvgIlHcoM9j0nuUPkh1a3DNyM9oSWKbDPDOQ_-dpZqzFw/viewform?usp=send_form"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-pastel-pink to-pastel-mauve text-slate-900 font-bold rounded-xl shadow-[0_0_20px_rgba(244,194,194,0.4)] hover:shadow-[0_0_35px_rgba(244,194,194,0.6)] transition-all flex items-center justify-center gap-2 text-lg"
