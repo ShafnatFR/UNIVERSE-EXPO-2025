@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import StarBackground from './StarBackground';
 import Navbar from './Navbar';
 import Hero from './Hero';
-import ProblemSection from './ProblemSection';
-import InspirationSection from './InspirationSection';
-import RSVPSection from './RSVPSection';
 import Footer from './Footer';
-// import AlumniSection from './AlumniSection';
-// import EventMap from './EventMap';
-import RegistrationForm from './RegistrationForm';
-import AlumniSection from './AlumniSection';
+
+// Lazy load components that are below the fold
+const ProblemSection = lazy(() => import('./ProblemSection'));
+const InspirationSection = lazy(() => import('./InspirationSection'));
+const RegistrationForm = lazy(() => import('./RegistrationForm'));
+const AlumniSection = lazy(() => import('./AlumniSection'));
+const RSVPSection = lazy(() => import('./RSVPSection'));
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex justify-center items-center py-20">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pastel-yellow"></div>
+  </div>
+);
 
 const App: React.FC = () => {
   return (
@@ -22,21 +29,31 @@ const App: React.FC = () => {
           <Hero />
         </section>
 
-        <ProblemSection />
+        {/* Lazy loaded sections with Suspense */}
+        <Suspense fallback={<LoadingFallback />}>
+          <ProblemSection />
+        </Suspense>
 
-        {/* Fitur Utama */}
-        {/* <EventMap /> */}
-        <AlumniSection />
-
-        <InspirationSection />
+        <Suspense fallback={<LoadingFallback />}>
+          <InspirationSection />
+        </Suspense>
 
         {/* ID Card Generator */}
-        <RegistrationForm />
+        <Suspense fallback={<LoadingFallback />}>
+          <RegistrationForm />
+        </Suspense>
+
+        {/* Alumni Section - Moved after Registration */}
+        <Suspense fallback={<LoadingFallback />}>
+          <AlumniSection />
+        </Suspense>
 
         {/* RSVP Section - Focused Content */}
-        <div id="rsvp">
-          <RSVPSection />
-        </div>
+        {/* <Suspense fallback={<LoadingFallback />}>
+          <div id="rsvp">
+            <RSVPSection />
+          </div>
+        </Suspense> */}
       </main>
 
       <Footer />

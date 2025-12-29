@@ -1,49 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ALUMNI_DATA } from './constants';
-import { MessageCircle, Star } from 'lucide-react';
+import { MessageCircle, Star, Filter } from 'lucide-react';
 
 const AlumniSection: React.FC = () => {
-    // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT URL
-    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx.../exec";
+    // Removed Google Sheets fetch - using local data instead
+    const [alumniData] = useState<typeof ALUMNI_DATA>(ALUMNI_DATA);
+    const [isLoading] = useState(false);
 
-    const [alumniData, setAlumniData] = useState<typeof ALUMNI_DATA>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [filter, setFilter] = useState<'All' | 'Saintek' | 'Soshum'>('All');
+    // Multi-criteria filters
+    const [selectedUniversity, setSelectedUniversity] = useState<string>('All');
+    const [selectedMajor, setSelectedMajor] = useState<string>('All');
+    const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // If URL is still placeholder, don't fetch or show error
-                if (GOOGLE_SHEET_URL.includes("...")) {
-                    console.warn("Google Sheet URL not set");
-                    setIsLoading(false);
-                    return;
-                }
+    // Extract unique values for filters
+    const uniqueUniversities = useMemo(() => {
+        const universities = Array.from(new Set(alumniData.map(a => a.university))).sort();
+        return ['All', ...universities];
+    }, [alumniData]);
 
-                const response = await fetch(GOOGLE_SHEET_URL);
-                const data = await response.json();
-                // Add IDs if missing, though typically index is enough for key if static
-                const formattedData = data.map((item: any, index: number) => ({
-                    ...item,
-                    id: item.id || `row-${index}`,
-                    // Ensure tags is array
-                    tags: Array.isArray(item.tags) ? item.tags : []
-                }));
-                setAlumniData(formattedData);
-            } catch (error) {
-                console.error("Error fetching alumni data:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    const uniqueMajors = useMemo(() => {
+        const majors = Array.from(new Set(alumniData.map(a => a.major))).sort();
+        return ['All', ...majors];
+    }, [alumniData]);
 
-        fetchData();
-    }, []);
+    const uniqueCategories = useMemo(() => {
+        const categories = Array.from(new Set(alumniData.map(a => a.category))).sort();
+        return ['All', ...categories];
+    }, [alumniData]);
 
-    const filteredAlumni = filter === 'All'
-        ? alumniData
-        : alumniData.filter(a => a.category === filter);
+    // Multi-criteria filtering
+    const filteredAlumni = useMemo(() => {
+        return alumniData.filter(alumni => {
+            const matchUniversity = selectedUniversity === 'All' || alumni.university === selectedUniversity;
+            const matchMajor = selectedMajor === 'All' || alumni.major === selectedMajor;
+            const matchCategory = selectedCategory === 'All' || alumni.category === selectedCategory;
+            return matchUniversity && matchMajor && matchCategory;
+        });
+    }, [alumniData, selectedUniversity, selectedMajor, selectedCategory]);
+
+    // Reset all filters
+    const resetFilters = () => {
+        setSelectedUniversity('All');
+        setSelectedMajor('All');
+        setSelectedCategory('All');
+    };
 
     return (
         <section className="relative z-10 py-16 md:py-24 px-4 bg-slate-900/50 backdrop-blur-sm">
@@ -57,19 +58,77 @@ const AlumniSection: React.FC = () => {
                         Jangan cuma menebak. Lihat mereka yang sudah sampai di sana. Filter berdasarkan minatmu.
                     </p>
 
-                    <div className="flex flex-wrap justify-center gap-3 mt-6 md:mt-8">
-                        {['All', 'Saintek', 'Soshum'].map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setFilter(cat as any)}
-                                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${filter === cat
-                                    ? 'bg-pastel-yellow text-slate-900 shadow-[0_0_15px_rgba(253,253,150,0.5)]'
-                                    : 'bg-white/10 text-white hover:bg-white/20'
-                                    }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
+                    {/* Multi-Criteria Filter Section */}
+                    <div className="mt-6 md:mt-8 space-y-4">
+                        <div className="flex items-center justify-center gap-2 text-pastel-yellow mb-4">
+                            <Filter size={20} />
+                            <span className="font-semibold">Filter Alumni</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                            {/* University Filter */}
+                            <div className="space-y-2">
+                                <label className="text-white text-sm font-medium block">University</label>
+                                <select
+                                    value={selectedUniversity}
+                                    onChange={(e) => setSelectedUniversity(e.target.value)}
+                                    className="w-full px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 focus:border-pastel-yellow focus:outline-none focus:ring-2 focus:ring-pastel-yellow/50 transition-all"
+                                >
+                                    {uniqueUniversities.map(uni => (
+                                        <option key={uni} value={uni} className="bg-slate-800 text-white">
+                                            {uni}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Major Filter */}
+                            <div className="space-y-2">
+                                <label className="text-white text-sm font-medium block">Program Studi</label>
+                                <select
+                                    value={selectedMajor}
+                                    onChange={(e) => setSelectedMajor(e.target.value)}
+                                    className="w-full px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 focus:border-pastel-yellow focus:outline-none focus:ring-2 focus:ring-pastel-yellow/50 transition-all"
+                                >
+                                    {uniqueMajors.map(major => (
+                                        <option key={major} value={major} className="bg-slate-800 text-white">
+                                            {major}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Category Filter */}
+                            <div className="space-y-2">
+                                <label className="text-white text-sm font-medium block">Kategori</label>
+                                <select
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="w-full px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 focus:border-pastel-yellow focus:outline-none focus:ring-2 focus:ring-pastel-yellow/50 transition-all"
+                                >
+                                    {uniqueCategories.map(cat => (
+                                        <option key={cat} value={cat} className="bg-slate-800 text-white">
+                                            {cat}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Filter Info & Reset */}
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
+                            <p className="text-pastel-yellow text-sm">
+                                Menampilkan <span className="font-bold">{filteredAlumni.length}</span> dari {alumniData.length} alumni
+                            </p>
+                            {(selectedUniversity !== 'All' || selectedMajor !== 'All' || selectedCategory !== 'All') && (
+                                <button
+                                    onClick={resetFilters}
+                                    className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-all text-sm font-medium"
+                                >
+                                    Reset Filter
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -96,11 +155,13 @@ const AlumniSection: React.FC = () => {
                                     {/* Card Content - STRICTLY BLACK TEXT as per prompt */}
                                     <div className="flex flex-col h-full">
                                         <div className="flex items-start justify-between mb-4">
+                                            {/* Avatar Image - Hidden but kept for future use 
                                             <img
                                                 src={alumni.image}
                                                 alt={alumni.name}
                                                 className="w-14 h-14 md:w-16 md:h-16 rounded-2xl object-cover border-2 border-slate-900"
                                             />
+                                            */}
                                             <div className="bg-slate-900 text-white text-[10px] md:text-xs px-2 py-1 rounded-lg">
                                                 {alumni.university}
                                             </div>
