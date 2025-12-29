@@ -31,10 +31,68 @@ const RegistrationForm: React.FC = () => {
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const objectUrl = URL.createObjectURL(file);
-            setFormData({ ...formData, photoPreview: objectUrl });
+            // Create image element to get dimensions
+            const img = new Image();
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                img.onload = () => {
+                    // Create canvas for cropping to square
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    if (!ctx || !event.target?.result) return;
+
+                    // Determine the size of the square (use the smaller dimension)
+                    const size = Math.min(img.width, img.height);
+                    canvas.width = size;
+                    canvas.height = size;
+
+                    // Calculate crop position (center crop)
+                    const startX = (img.width - size) / 2;
+                    const startY = (img.height - size) / 2;
+
+                    // Draw cropped square image
+                    ctx.drawImage(img, startX, startY, size, size, 0, 0, size, size);
+
+                    // Convert to data URL
+                    const croppedImageUrl = canvas.toDataURL('image/png');
+                    setFormData({ ...formData, photoPreview: croppedImageUrl });
+                };
+
+                img.src = event.target.result as string;
+            };
+
+            reader.readAsDataURL(file);
         }
     };
+
+    // Auto-crop default image on mount
+    React.useEffect(() => {
+        if (formData.photoPreview === defaultProfile) {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                if (!ctx) return;
+
+                const size = Math.min(img.width, img.height);
+                canvas.width = size;
+                canvas.height = size;
+
+                const startX = (img.width - size) / 2;
+                const startY = (img.height - size) / 2;
+
+                ctx.drawImage(img, startX, startY, size, size, 0, 0, size, size);
+
+                const croppedImageUrl = canvas.toDataURL('image/png');
+                setFormData({ ...formData, photoPreview: croppedImageUrl });
+            };
+            img.src = defaultProfile;
+        }
+    }, []); // Run once on mount
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -54,11 +112,15 @@ const RegistrationForm: React.FC = () => {
             await new Promise(resolve => setTimeout(resolve, 500));
 
             const canvas = await html2canvas(cardResultRef.current, {
-                backgroundColor: '#1a1a2e', // Force background color
-                scale: 3, // High quality
+                backgroundColor: '#1a1a2e',
+                width: 320,
+                height: 480,
+                scale: 2, // Reduced from 3 to prevent distortion
                 useCORS: true,
                 logging: false,
                 allowTaint: true,
+                imageTimeout: 0,
+                removeContainer: true,
             });
 
             const image = canvas.toDataURL("image/png");
@@ -154,7 +216,7 @@ const RegistrationForm: React.FC = () => {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-slate-900">Upload Foto Profil</h4>
-                                        <p className="text-xs text-slate-500 mb-2">Format: JPG, PNG. Max 2MB.</p>
+                                        <p className="text-xs text-slate-500 mb-2">Format: JPG, PNG. Max 2MB. Ukuran 1*1</p>
                                         <button
                                             type="button"
                                             onClick={() => fileInputRef.current?.click()}
@@ -356,8 +418,18 @@ const RegistrationForm: React.FC = () => {
 
                         {/* Photo Area */}
                         <div className="flex justify-center mb-6">
-                            <div className="relative p-1 rounded-full border-2 border-dashed border-white/30 w-32 h-32 flex items-center justify-center">
-                                <div className="w-full h-full rounded-full overflow-hidden bg-slate-800 relative z-10">
+                            <div
+                                className="relative p-1 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center"
+                                style={{ width: '136px', height: '136px' }}
+                            >
+                                <div
+                                    className="rounded-full overflow-hidden bg-slate-800 relative z-10"
+                                    style={{
+                                        width: '128px',
+                                        height: '128px',
+                                        borderRadius: '50%'
+                                    }}
+                                >
                                     {formData.photoPreview ? (
                                         <img
                                             src={formData.photoPreview}

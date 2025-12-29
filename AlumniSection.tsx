@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { ALUMNI_DATA } from './constants';
 import { MessageCircle, Star, Filter } from 'lucide-react';
 
@@ -12,6 +12,11 @@ const AlumniSection: React.FC = () => {
     const [selectedUniversity, setSelectedUniversity] = useState<string>('All');
     const [selectedMajor, setSelectedMajor] = useState<string>('All');
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+    // Lazy loading state
+    const [visibleCount, setVisibleCount] = useState(12); // Show 12 cards initially
+    const loadMoreRef = useRef<HTMLDivElement>(null);
+    const CARDS_PER_BATCH = 12;
 
     // Extract unique values for filters
     const uniqueUniversities = useMemo(() => {
@@ -38,6 +43,36 @@ const AlumniSection: React.FC = () => {
             return matchUniversity && matchMajor && matchCategory;
         });
     }, [alumniData, selectedUniversity, selectedMajor, selectedCategory]);
+
+    // Lazy loaded alumni (progressive rendering)
+    const visibleAlumni = useMemo(() => {
+        return filteredAlumni.slice(0, visibleCount);
+    }, [filteredAlumni, visibleCount]);
+
+    const hasMore = visibleCount < filteredAlumni.length;
+
+    // Intersection Observer for lazy loading
+    useEffect(() => {
+        if (!loadMoreRef.current) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore) {
+                    setVisibleCount(prev => prev + CARDS_PER_BATCH);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(loadMoreRef.current);
+
+        return () => observer.disconnect();
+    }, [hasMore]);
+
+    // Reset visible count when filters change
+    useEffect(() => {
+        setVisibleCount(CARDS_PER_BATCH);
+    }, [selectedUniversity, selectedMajor, selectedCategory]);
 
     // Reset all filters
     const resetFilters = () => {
@@ -118,7 +153,7 @@ const AlumniSection: React.FC = () => {
                         {/* Filter Info & Reset */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
                             <p className="text-pastel-yellow text-sm">
-                                Menampilkan <span className="font-bold">{filteredAlumni.length}</span> dari {alumniData.length} alumni
+                                Menampilkan <span className="font-bold">{visibleAlumni.length}</span> dari {filteredAlumni.length} alumni{filteredAlumni.length !== alumniData.length && ` (${alumniData.length} total)`}
                             </p>
                             {(selectedUniversity !== 'All' || selectedMajor !== 'All' || selectedCategory !== 'All') && (
                                 <button
@@ -137,63 +172,71 @@ const AlumniSection: React.FC = () => {
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pastel-yellow"></div>
                     </div>
                 ) : (
-                    <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <AnimatePresence>
-                            {filteredAlumni.map((alumni) => (
-                                <motion.div
-                                    layout
-                                    key={alumni.id}
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{ duration: 0.3 }}
-                                    className={`
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {visibleAlumni.map((alumni, index) => (
+                            <motion.div
+                                key={alumni.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    duration: 0.4,
+                                    delay: index < 12 ? index * 0.05 : 0,
+                                    ease: "easeOut"
+                                }}
+                                className={`
                                     relative p-6 rounded-3xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300
                                     ${alumni.category === 'Saintek' ? 'bg-pastel-blue' : 'bg-pastel-pink'}
                                 `}
-                                >
-                                    {/* Card Content - STRICTLY BLACK TEXT as per prompt */}
-                                    <div className="flex flex-col h-full">
-                                        <div className="flex items-start justify-between mb-4">
-                                            {/* Avatar Image - Hidden but kept for future use 
-                                            <img
-                                                src={alumni.image}
-                                                alt={alumni.name}
-                                                className="w-14 h-14 md:w-16 md:h-16 rounded-2xl object-cover border-2 border-slate-900"
-                                            />
-                                            */}
-                                            <div className="bg-slate-900 text-white text-[10px] md:text-xs px-2 py-1 rounded-lg">
-                                                {alumni.university}
-                                            </div>
+                            >
+                                {/* Card Content - STRICTLY BLACK TEXT as per prompt */}
+                                <div className="flex flex-col h-full">
+                                    <div className="flex items-start justify-between mb-4">
+                                        {/* Avatar Image - Hidden but kept for future use 
+                                        <img
+                                            src={alumni.image}
+                                            alt={alumni.name}
+                                            className="w-14 h-14 md:w-16 md:h-16 rounded-2xl object-cover border-2 border-slate-900"
+                                        />
+                                        */}
+                                        <div className="bg-slate-900 text-white text-[10px] md:text-xs px-2 py-1 rounded-lg">
+                                            {alumni.university}
                                         </div>
-
-                                        <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">{alumni.name}</h3>
-                                        <p className="text-xs md:text-sm font-semibold text-slate-800 mb-4">{alumni.major}</p>
-
-                                        <div className="bg-white/40 p-3 rounded-xl mb-4 backdrop-blur-sm border border-slate-900/10 flex-grow">
-                                            <p className="text-slate-900 italic text-sm">"{alumni.quote}"</p>
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-2 mb-4">
-                                            {alumni.tags.map(tag => (
-                                                <span key={tag} className="text-[10px] uppercase font-bold text-slate-600 border border-slate-600 px-2 py-0.5 rounded-full">
-                                                    #{tag}
-                                                </span>
-                                            ))}
-                                        </div>
-
-                                        <button className="w-full py-2 bg-slate-900 text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors text-sm">
-                                            <MessageCircle size={16} />
-                                            Chat Alumni
-                                        </button>
                                     </div>
 
-                                    {/* Decoration */}
-                                    <Star className="absolute -bottom-4 -right-4 text-white/30 w-24 h-24 rotate-12" />
-                                </motion.div>
-                            ))}
-                        </AnimatePresence>
-                    </motion.div>
+                                    <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">{alumni.name}</h3>
+                                    <p className="text-xs md:text-sm font-semibold text-slate-800 mb-4">{alumni.major}</p>
+
+                                    <div className="bg-white/40 p-3 rounded-xl mb-4 backdrop-blur-sm border border-slate-900/10 flex-grow">
+                                        <p className="text-slate-900 italic text-sm">"{alumni.quote}"</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {alumni.tags.map(tag => (
+                                            <span key={tag} className="text-[10px] uppercase font-bold text-slate-600 border border-slate-600 px-2 py-0.5 rounded-full">
+                                                #{tag}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <button className="w-full py-2 bg-slate-900 text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors text-sm">
+                                        <MessageCircle size={16} />
+                                        Chat Alumni
+                                    </button>
+                                </div>
+
+                                {/* Decoration */}
+                                <Star className="absolute -bottom-4 -right-4 text-white/30 w-24 h-24 rotate-12" />
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Lazy loading trigger - invisible element */}
+                {hasMore && (
+                    <div ref={loadMoreRef} className="flex justify-center items-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-pastel-yellow"></div>
+                        <span className="ml-3 text-pastel-yellow text-sm">Memuat lebih banyak...</span>
+                    </div>
                 )}
             </div>
         </section>
