@@ -27,9 +27,9 @@ const Hero: React.FC = () => {
                 <div className="inline-block mb-4 px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/10 backdrop-blur-md border border-pastel-pink/30">
                     <span className="text-pastel-pink font-semibold tracking-wider text-xs md:text-sm">UNIVERSE EXPO 2025</span>
                 </div>
-                
-                {/* Responsive Typography */}
-                <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-6 leading-tight text-white">
+
+                {/* OLD CONTENT - FOR STUDENTS */}
+                {/* <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-6 leading-tight text-white">
                     Temukan <span className="text-transparent bg-clip-text bg-gradient-to-r from-pastel-pink to-pastel-mauve">Semestamu</span>,<br />
                     Mulai <span className="text-transparent bg-clip-text bg-gradient-to-r from-pastel-blue to-white">Perjalananmu</span>.
                 </h1>
@@ -37,21 +37,43 @@ const Hero: React.FC = () => {
                 <p className="text-base sm:text-lg md:text-xl text-pastel-cream/80 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light px-2">
                     Bingung mau ke mana setelah lulus? Temui kakak kelasmu yang telah menjelajah lebih dulu. 
                     Dengar cerita nyata, bukan sekadar brosur.
+                </p> */}
+
+                {/* NEW CONTENT - COMMITTEE RECRUITMENT */}
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-6 leading-tight text-white">
+                    Bergabunglah dengan <span className="text-transparent bg-clip-text bg-gradient-to-r from-pastel-pink to-pastel-mauve">Tim Kami</span>,<br />
+                    Wujudkan <span className="text-transparent bg-clip-text bg-gradient-to-r from-pastel-blue to-white">Universe Expo</span>!
+                </h1>
+
+                <p className="text-base sm:text-lg md:text-xl text-pastel-cream/80 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light px-2">
+                    Jadilah bagian dari panitia Universe Expo 2025! Kembangkan skill, perluas networking,
+                    dan ciptakan pengalaman tak terlupakan bersama tim solid.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <motion.button
+                    {/* OLD BUTTON - FOR STUDENTS */}
+                    {/* <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={scrollToContent}
                         className="group relative w-full sm:w-auto px-8 py-3.5 md:py-4 bg-gradient-to-r from-pastel-pink to-pastel-mauve rounded-full font-bold text-slate-900 shadow-[0_0_20px_rgba(244,194,194,0.4)] hover:shadow-[0_0_30px_rgba(244,194,194,0.6)] transition-all flex items-center justify-center gap-2 text-sm md:text-base"
                     >
                         Mulai Menjelajah 🚀
+                    </motion.button> */}
+
+                    {/* NEW BUTTON - COMMITTEE RECRUITMENT */}
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={scrollToContent}
+                        className="group relative w-full sm:w-auto px-8 py-3.5 md:py-4 bg-gradient-to-r from-pastel-pink to-pastel-mauve rounded-full font-bold text-slate-900 shadow-[0_0_20px_rgba(244,194,194,0.4)] hover:shadow-[0_0_30px_rgba(244,194,194,0.6)] transition-all flex items-center justify-center gap-2 text-sm md:text-base"
+                    >
+                        Daftar Jadi Panitia 🎯
                     </motion.button>
                 </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
                 className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 cursor-pointer text-pastel-blue/70 hover:text-white transition-colors"
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
