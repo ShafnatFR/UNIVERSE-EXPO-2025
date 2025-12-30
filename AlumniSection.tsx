@@ -1,12 +1,15 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ALUMNI_DATA } from './constants';
-import { MessageCircle, Star, Filter } from 'lucide-react';
+import { MessageCircle, Star, Filter, Search } from 'lucide-react';
 
 const AlumniSection: React.FC = () => {
     // Removed Google Sheets fetch - using local data instead
     const [alumniData] = useState<typeof ALUMNI_DATA>(ALUMNI_DATA);
     const [isLoading] = useState(false);
+
+    // Search query
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Multi-criteria filters
     const [selectedUniversity, setSelectedUniversity] = useState<string>('All');
@@ -34,15 +37,24 @@ const AlumniSection: React.FC = () => {
         return ['All', ...categories];
     }, [alumniData]);
 
-    // Multi-criteria filtering
+    // Multi-criteria filtering with search
     const filteredAlumni = useMemo(() => {
         return alumniData.filter(alumni => {
+            // Search filter
+            const searchLower = searchQuery.toLowerCase();
+            const matchSearch = searchQuery === '' ||
+                alumni.name.toLowerCase().includes(searchLower) ||
+                alumni.university.toLowerCase().includes(searchLower) ||
+                alumni.major.toLowerCase().includes(searchLower);
+
+            // Dropdown filters
             const matchUniversity = selectedUniversity === 'All' || alumni.university === selectedUniversity;
             const matchMajor = selectedMajor === 'All' || alumni.major === selectedMajor;
             const matchCategory = selectedCategory === 'All' || alumni.category === selectedCategory;
-            return matchUniversity && matchMajor && matchCategory;
+
+            return matchSearch && matchUniversity && matchMajor && matchCategory;
         });
-    }, [alumniData, selectedUniversity, selectedMajor, selectedCategory]);
+    }, [alumniData, searchQuery, selectedUniversity, selectedMajor, selectedCategory]);
 
     // Lazy loaded alumni (progressive rendering)
     const visibleAlumni = useMemo(() => {
@@ -69,13 +81,14 @@ const AlumniSection: React.FC = () => {
         return () => observer.disconnect();
     }, [hasMore]);
 
-    // Reset visible count when filters change
+    // Reset visible count when filters or search change
     useEffect(() => {
         setVisibleCount(CARDS_PER_BATCH);
-    }, [selectedUniversity, selectedMajor, selectedCategory]);
+    }, [searchQuery, selectedUniversity, selectedMajor, selectedCategory]);
 
-    // Reset all filters
+    // Reset all filters and search
     const resetFilters = () => {
+        setSearchQuery('');
         setSelectedUniversity('All');
         setSelectedMajor('All');
         setSelectedCategory('All');
@@ -98,6 +111,28 @@ const AlumniSection: React.FC = () => {
                         <div className="flex items-center justify-center gap-2 text-pastel-yellow mb-4">
                             <Filter size={20} />
                             <span className="font-semibold">Filter Alumni</span>
+                        </div>
+
+                        {/* Search Bar */}
+                        <div className="max-w-4xl mx-auto mb-6">
+                            <div className="relative">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" size={20} />
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Cari nama, universitas, atau jurusan... (contoh: Shafnat, Telkom, Sistem Informasi)"
+                                    className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/10 text-white placeholder:text-white/40 border border-white/20 focus:border-pastel-yellow focus:outline-none focus:ring-2 focus:ring-pastel-yellow/50 transition-all"
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => setSearchQuery('')}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                                    >
+                                        ✕
+                                    </button>
+                                )}
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">

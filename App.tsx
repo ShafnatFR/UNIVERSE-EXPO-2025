@@ -38,22 +38,23 @@ const App: React.FC = () => {
           <InspirationSection />
         </Suspense>
 
+
+        {/* Alumni Section - Moved after Registration */}
+        {/* <Suspense fallback={<LoadingFallback />}>
+          <AlumniSection />
+          </Suspense> */}
+
+        {/* RSVP Section - Focused Content */}
+        <Suspense fallback={<LoadingFallback />}>
+          <div id="rsvp">
+            <RSVPSection />
+          </div>
+        </Suspense>
+
         {/* ID Card Generator */}
         <Suspense fallback={<LoadingFallback />}>
           <RegistrationForm />
         </Suspense>
-
-        {/* Alumni Section - Moved after Registration */}
-        <Suspense fallback={<LoadingFallback />}>
-          <AlumniSection />
-        </Suspense>
-
-        {/* RSVP Section - Focused Content */}
-        {/* <Suspense fallback={<LoadingFallback />}>
-          <div id="rsvp">
-            <RSVPSection />
-          </div>
-        </Suspense> */}
       </main>
 
       <Footer />
